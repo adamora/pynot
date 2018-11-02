@@ -388,7 +388,7 @@ class Event(CommonModel):
             if isinstance(kwargs[param.name], models.Model):
                 kwargs[param.name] = get_class(param.serializer)(kwargs[param.name])
 
-            data[param.name]=json.loads(json.dumps(kwargs[param.name].data))
+            data[param.name] = kwargs[param.name].data
 
         expanded = Event.expand_params(data)
 
