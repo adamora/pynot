@@ -1,6 +1,6 @@
 # coding=utf-8
 from celery import shared_task
-from .utils.util_email import send_email
+from .utils.util_email import send_email as send_new_email
 
 @shared_task(bind=True, name='pynot.tasks.send_email')
 def send_email(self, not_id):
@@ -25,11 +25,11 @@ def send_email(self, not_id):
             subject = notification_fire.subject
             message = notification_fire.message
             print("pynot.tasks.send_email (not_id={0}): send_email".format(not_id))
-            send_email(to_email=notification.recipient,
-                       subject=subject,
-                       template=Config.load().email_template,
-                       context={'message':message},
-                       smtp_config_name='pynot')
+            send_new_email(to_email=notification.recipient,
+                           subject=subject,
+                           template=Config.load().email_template,
+                           context={'message':message},
+                           smtp_config_name='pynot')
             print("pynot.tasks.send_email (not_id={0}): sended".format(not_id))
             notification.status='completed'
             notification.save()
